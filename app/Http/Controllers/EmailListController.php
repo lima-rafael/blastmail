@@ -7,6 +7,8 @@ use App\Http\Requests\UpdateEmailListRequest;
 use App\Models\EmailList;
 use App\Models\Subscriber;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class EmailListController extends Controller
 {
@@ -33,33 +35,39 @@ class EmailListController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'title' => ['required', 'max:255'],
             'file' => ['required', 'file', 'mimes:csv']
         ]);
 
-        $file = $request->file('file');
+        $emails = $this->getEmailsFromCsvFile($request->file('file'));
+
+        DB::transaction(function() use ($request, $emails){
+            $emailList = EmailList::query()->create(['title' => $request->title,]);
+            $emailList->subscribers()->createMany($emails);
+        });        
+
+        return to_route('email-list.index');
+    }
+
+    private function getEmailsFromCsvFile(UploadedFile $file) : array
+    {
         $fileHandle = fopen($file->getRealPath(), 'r');
-        $items = [];
+        $emails = [];
 
         while(($row = fgetcsv($fileHandle, null, ',')) !== false){
             if($row[0] == 'Name' && $row[1] == 'Email'){
                 continue;
             }
-            $items[] = [
+            $emails[] = [
                 'name' => $row[0],
                 'email' => $row[1],
             ];
         }
 
         fclose($fileHandle);
-        
-        $emailList = EmailList::query()->create([
-            'title' => $request->title,
-        ]);
 
-        $emailList->subscribers()->createMany($items);
-        return to_route('email-list.index');
+        return $emails;
     }
 
     /**
