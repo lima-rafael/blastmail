@@ -6,6 +6,7 @@ use App\Http\Requests\StoreEmailListRequest;
 use App\Http\Requests\UpdateEmailListRequest;
 use App\Models\EmailList;
 use App\Models\Subscriber;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,8 +18,21 @@ class EmailListController extends Controller
      */
     public function index()
     {
+        $search = request()->search;
+        $emailLists = EmailList::query()
+            ->withCount('subscribers')
+            ->when(
+                $search,
+                fn (Builder $query) => $query
+                    ->where('title', 'like', "%$search%")
+                    ->orWhere('id', '=', $search)
+            )
+            ->paginate(5)
+            ->appends(compact('search'));
+            
         return view('email-list.index',[
-            'emailLists' => EmailList::query()->paginate(),
+            'emailLists' => $emailLists,
+            'search' => $search,
         ]);
     }
 
