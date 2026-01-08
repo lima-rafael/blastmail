@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <x-card>
-            <x-form :action="route('email-list.store')" post enctype="multipart/form-data">
+            <x-form :action="route('email-list.create')" post enctype="multipart/form-data">
                 <div>
                     <x-input-label for="title" :value="__('Title')" />
                     <x-input.text id="title" class="block mt-1 w-full" name="title" :value="old('title')" autofocus/>
@@ -23,9 +23,9 @@
                     <x-button.secondary type="reset">
                         {{ __('Cancel') }}
                     </x-button.secondary>
-                    <x-button.primary type="submit">
+                    <x-button type="submit">
                         {{ __('Save') }}
-                    </x-button.primary>
+                    </x-button>
                 </div>
             </x-form>
         </x-card>
