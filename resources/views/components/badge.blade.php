@@ -6,7 +6,7 @@
 <span
     {{$attributes->class
     ([
-        "rounded-xl w-fit border px-2 py-1 text-xs font-medium",
+        "rounded-xl w-fit border px-2 py-1 text-xs font-medium h-full",
         "border-red-500 bg-red-500 text-on-danger dark:border-danger dark:bg-danger dark:text-on-danger" => $danger,
         "border-warning-500 bg-warning-500 text-on-warning dark:border-warning dark:bg-warning dark:text-on-warning" => $warning,
     ])
