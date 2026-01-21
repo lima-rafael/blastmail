@@ -15,14 +15,14 @@
                 </div>
                 <div>
                     <x-input-label for="body" :value="__('Body')" />
-                    <x-input.text id="body" class="block mt-1 w-full" name="body" :value="old('body')" autofocus/>
+                    <x-input.richtext class="block mt-1 w-full" name="body" :value="old('body')" autofocus/>
                     <x-input-error :messages="$errors->get('body')" class="mt-2" />
                 </div>
 
                 <div class="flex items-center space-x-4">
-                    <x-button.secondary type="reset">
+                    <x-button.link secondary :href="route('template.index')">
                         {{ __('Cancel') }}
-                    </x-button.secondary>
+                    </x-button.link>
                     <x-button type="submit">
                         {{ __('Save') }}
                     </x-button>

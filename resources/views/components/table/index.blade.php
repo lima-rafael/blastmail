@@ -9,7 +9,7 @@
             class="border-b border-outline bg-surface-alt text-sm text-on-surface-strong dark:border-outline-dark dark:bg-surface-dark-alt dark:text-on-surface-dark-strong">
             <tr>
                 @foreach($headers as $header)
-                    <th scope="col" class="p-4">{{$header}}</th>
+                    <th scope="col" class="p-4 whitespace-nowrap">{{$header}}</th>
                 @endforeach
             </tr>
         </thead>

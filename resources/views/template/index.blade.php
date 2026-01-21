@@ -27,23 +27,30 @@
                     <x-slot name="body">
                         @foreach ($templates as $template)
                             <tr>
-                                <x-table.td>{{ $template->id }}</x-table.td>
+                                <x-table.td class="w-1">{{ $template->id }}</x-table.td>
                                 <x-table.td>{{ $template->name }}</x-table.td>
-                                <x-table.td class="flex items-center gap-4">
-                                    @unless ($template->trashed())
-                                        <x-form :action="route('template.edit', [$template])">
-                                            <x-button.secondary type="submit">
-                                                {{ __('Edit') }}
-                                            </x-button.secondary>
-                                        </x-form>
-                                        <x-form :action="route('template.destroy', [$template])" delete>
-                                            <x-button.secondary type="submit" onclick="return confirm('{{ __('Are you sure?') }}')">
-                                                {{ __('Delete') }}
-                                            </x-button.secondary>
-                                        </x-form>
-                                        @else
-                                        <x-badge danger>{{ __('Deleted') }}</x-badge>
-                                    @endunless
+                                <x-table.td class="w-1">
+                                    <div class="flex items-center gap-4">
+                                        @unless ($template->trashed())
+                                            <x-form :action="route('template.show', [$template])">
+                                                <x-button.secondary type="submit">
+                                                    {{ __('preview') }}
+                                                </x-button.secondary>
+                                            </x-form>
+                                            <x-form :action="route('template.edit', [$template])">
+                                                <x-button.secondary type="submit">
+                                                    {{ __('Edit') }}
+                                                </x-button.secondary>
+                                            </x-form>
+                                            <x-form :action="route('template.destroy', [$template])" delete>
+                                                <x-button.secondary type="submit" onclick="return confirm('{{ __('Are you sure?') }}')">
+                                                    {{ __('Delete') }}
+                                                </x-button.secondary>
+                                            </x-form>
+                                            @else
+                                            <x-badge danger>{{ __('Deleted') }}</x-badge>
+                                        @endunless
+                                    </div>
                                 </x-table.td>
                             </tr>
                         @endforeach
