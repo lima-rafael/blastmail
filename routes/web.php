@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CampaingController;
+use App\Http\Controllers\CampaignsController;
 use App\Http\Controllers\EmailListController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriberController;
@@ -23,7 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/email-list/{emailList}/subscribers/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscribers.destroy');
 
     Route::resource('template', TemplateController::class);
-    Route::resource('campaings', CampaingController::class)->only(['index', 'create', 'destroy']);
+    Route::resource('campaigns', CampaignsController::class)->only(['index', 'destroy']);
+    Route::get('/campaigns/create/{tab?}', [CampaignsController::class, 'create'])->name('campaigns.create');
+    Route::post('/campaigns/create/{tab?}', [CampaignsController::class, 'store']);
+    Route::patch('/campaigns/{campaing}/restore', [CampaignsController::class, 'restore'])->withTrashed()->name('campaigns.restore');
 });
 
 require __DIR__.'/auth.php';

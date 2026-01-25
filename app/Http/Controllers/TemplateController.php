@@ -24,7 +24,7 @@ class TemplateController extends Controller
                         ->orWhere('id', '=', $search)
                 )
                 ->paginate(5)
-                ->appends(compact('search')),
+                ->appends(compact('search','showTrash')),
             'search' => $search,
             'showTrash' => $showTrash
         ]);
