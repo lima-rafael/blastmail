@@ -5,6 +5,7 @@ use App\Http\Controllers\EmailListController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\TemplateController;
+use App\Http\Middleware\CampaignCreateSessionControl;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
@@ -24,7 +25,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('template', TemplateController::class);
     Route::resource('campaigns', CampaignsController::class)->only(['index', 'destroy']);
-    Route::get('/campaigns/create/{tab?}', [CampaignsController::class, 'create'])->name('campaigns.create');
+    Route::get('/campaigns/create/{tab?}', [CampaignsController::class, 'create'])
+        ->middleware(CampaignCreateSessionControl::class)
+        ->name('campaigns.create');
     Route::post('/campaigns/create/{tab?}', [CampaignsController::class, 'store']);
     Route::patch('/campaigns/{campaigns}/restore', [CampaignsController::class, 'restore'])->withTrashed()->name('campaigns.restore');
 });
