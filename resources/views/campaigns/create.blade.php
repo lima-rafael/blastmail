@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <x-card>
-            <x-form :action="route('campaigns.create')" post>
+            <x-form :action="route('campaigns.create', $tab)" post>
                 <x-tabs :tabs="[
                     __('Setup') => route('campaigns.create'),
                     __('Email Body') => route('campaigns.create', ['tab' => 'template']),

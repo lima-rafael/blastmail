@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Campaing extends Model
+class Campaigns extends Model
 {
-    /** @use HasFactory<\Database\Factories\CampaingFactory> */
+    /** @use HasFactory<\Database\Factories\CampaignsFactory> */
     use HasFactory;
     use SoftDeletes;
 }
