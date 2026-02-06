@@ -35,9 +35,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/campaigns/{campaigns}/restore', [CampaignsController::class, 'restore'])->withTrashed()->name('campaigns.restore');
 
     Route::get('/campaigns/{campaigns}/emails', function (Campaigns $campaigns){
-        foreach ($campaigns->emailList->subscribers as $subscriber) {
-                Mail::to($subscriber->email)->send(new EmailCampaign($campaigns));
-            }
         return (new EmailCampaign($campaigns))->render();
     });
 });
