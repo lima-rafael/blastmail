@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CampaignsStoreRequest;
+use App\Mail\EmailCampaign;
 use App\Models\Campaigns;
 use App\Models\EmailList;
 use App\Models\Template;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Traits\Conditionable;
 
 class CampaignsController extends Controller
@@ -80,7 +82,11 @@ class CampaignsController extends Controller
 
         if($tab == 'schedule'){
             // dd($data);
-            Campaigns::create($data);
+            $campaigns = Campaigns::create($data);
+
+             foreach ($campaigns->emailList->subscribers as $subscriber) {
+                Mail::to($subscriber->email)->send(new EmailCampaign($campaigns));
+            }
         }
         return response()->redirectTo($toRoute);
     }

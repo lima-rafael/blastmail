@@ -11,4 +11,9 @@ class Campaigns extends Model
     /** @use HasFactory<\Database\Factories\CampaignsFactory> */
     use HasFactory;
     use SoftDeletes;
+
+    public function emailList()
+    {
+        return $this->belongsTo(EmailList::class);
+    }
 }
