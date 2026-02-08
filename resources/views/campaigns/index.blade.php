@@ -19,21 +19,23 @@
             </div>
             <x-table :headers="['#', __('Name'), __('Actions')]">
                 <x-slot name="body">
-                    @foreach ($campaigns as $Campaigns)
+                    @foreach ($campaigns as $campaign)
                         <tr>
-                            <x-table.td class="w-1">{{ $Campaigns->id }}</x-table.td>
-                            <x-table.td>{{ $Campaigns->name }}</x-table.td>
+                            <x-table.td class="w-1">{{ $campaign->id }}</x-table.td>
+                            <x-table.td>
+                                <a href="{{ route('campaigns.show', $campaign) }}">{{ $campaign->name }}</a>
+                            </x-table.td>
                             <x-table.td class="w-1">
                                 <div class="flex items-center gap-4">
-                                    @unless ($Campaigns->trashed())
-                                        <x-form :action="route('campaigns.destroy', [$Campaigns])" delete>
+                                    @unless ($campaign->trashed())
+                                        <x-form :action="route('campaigns.destroy', [$campaign])" delete>
                                             <x-button.secondary type="submit"
                                                 onclick="return confirm('{{ __('Are you sure?') }}')">
                                                 {{ __('Delete') }}
                                             </x-button.secondary>
                                         </x-form>
                                     @else
-                                        <x-form :action="route('campaigns.restore', [$Campaigns])" patch>
+                                        <x-form :action="route('campaigns.restore', [$campaign])" patch>
                                             <x-button.secondary danger type="submit"
                                                 onclick="return confirm('{{ __('Are you sure?') }}')">
                                                 {{ __('Restore') }}

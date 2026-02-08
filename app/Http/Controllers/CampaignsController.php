@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Traits\Conditionable;
 
+use function PHPUnit\Framework\isNull;
+
 class CampaignsController extends Controller
 {
     use Conditionable;
@@ -38,6 +40,16 @@ class CampaignsController extends Controller
             'search' => $search,
             'showTrash' => $showTrash
         ]);
+    }
+
+    public function show(Campaigns $campaigns, ?string $what = null)
+    {
+        if(is_null($what)){
+            return to_route('campaigns.show', ['campaigns' => $campaigns, 'what' => 'statistics']);
+        }
+
+        abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404);
+        return view('campaigns.show', compact('campaigns', 'what'));
     }
 
     public function create(?string $tab = null)

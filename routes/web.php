@@ -18,6 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('/email-list', [EmailListController::class, 'index'])->name('email-list.index');
     Route::get('/email-list/create', [EmailListController::class, 'create'])->name('email-list.create');
     Route::post('/email-list/create', [EmailListController::class, 'store']);
@@ -25,18 +26,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/email-list/{emailList}/subscribers/create', [SubscriberController::class, 'create'])->name('subscribers.create');
     Route::post('/email-list/{emailList}/subscribers/create', [SubscriberController::class, 'store']);
     Route::delete('/email-list/{emailList}/subscribers/{subscriber}', [SubscriberController::class, 'destroy'])->name('subscribers.destroy');
-
+    
     Route::resource('template', TemplateController::class);
-    Route::resource('campaigns', CampaignsController::class)->only(['index', 'destroy']);
+    // Route::resource('campaigns', CampaignsController::class)->only(['index', 'destroy']);
+    Route::get('/campaigns', [CampaignsController::class, 'index'])->name('campaigns.index');
+    Route::delete('/campaigns/{campaigns}/destroy', [CampaignsController::class, 'destroy'])->name('campaigns.destroy');
     Route::get('/campaigns/create/{tab?}', [CampaignsController::class, 'create'])
-        ->middleware(CampaignCreateSessionControl::class)
-        ->name('campaigns.create');
+    ->middleware(CampaignCreateSessionControl::class)
+    ->name('campaigns.create');
     Route::post('/campaigns/create/{tab?}', [CampaignsController::class, 'store']);
+    Route::get('/campaigns/{campaigns}/{what?}', [CampaignsController::class, 'show'])->name('campaigns.show');
     Route::patch('/campaigns/{campaigns}/restore', [CampaignsController::class, 'restore'])->withTrashed()->name('campaigns.restore');
-
-    Route::get('/campaigns/{campaigns}/emails', function (Campaigns $campaigns){
-        return (new EmailCampaign($campaigns))->render();
-    });
+    
 });
 
 require __DIR__.'/auth.php';
