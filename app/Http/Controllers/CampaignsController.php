@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CampaignShowRequest;
 use App\Http\Requests\CampaignsStoreRequest;
-use App\Jobs\SendEmailCampaign;
+use App\Jobs\SendEmailsCampaign;
 use App\Mail\EmailCampaign;
 use App\Models\Campaigns;
 use App\Models\EmailList;
@@ -42,17 +43,30 @@ class CampaignsController extends Controller
         ]);
     }
 
-    public function show(Campaigns $campaigns, ?string $what = null)
+    public function show(CampaignShowRequest $request, Campaigns $campaigns, ?string $what = null)
     {
-        if(is_null($what)){
-            return to_route('campaigns.show', ['campaigns' => $campaigns, 'what' => 'statistics']);
+        if($redirect = $request->checkWhat()){
+            return $redirect;
         }
 
-        abort_unless(in_array($what, ['statistics', 'open', 'clicked']), 404);
+        $query = $campaigns
+            ->mails()
+            ->selectRaw("
+                count(subscriber_id) as total_subscribers,
+                sum(openings) as total_openings,
+                count(case when openings > 0 then subscriber_id end) as unique_openings,
+                round((cast(count(case when openings > 0 then subscriber_id end) as float) / cast(count(subscriber_id) as float)) * 100) as openings_rate,
+
+                sum(clicks) as total_clicks,
+                count(case when clicks > 0 then subscriber_id end) as unique_clicks,
+                round((cast(count(case when clicks > 0 then subscriber_id end) as float) / cast(count(subscriber_id) as float)) * 100) as clicks_rate
+            ")
+            ->first();
+
+        // dd($query->toArray());
 
         $search = request()->search;
-
-        return view('campaigns.show', compact('campaigns', 'what', 'search'));
+        return view('campaigns.show', compact('campaigns', 'what', 'search', 'query'));
     }
 
     public function create(?string $tab = null)
@@ -100,7 +114,7 @@ class CampaignsController extends Controller
             // dd($data);
             $campaigns = Campaigns::create($data);
 
-             SendEmailCampaign::dispatchAfterResponse($campaigns);
+             SendEmailsCampaign::dispatchAfterResponse($campaigns);
         }
         return response()->redirectTo($toRoute);
     }

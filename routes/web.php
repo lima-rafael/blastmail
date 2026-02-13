@@ -35,7 +35,7 @@ Route::middleware('auth')->group(function () {
     ->middleware(CampaignCreateSessionControl::class)
     ->name('campaigns.create');
     Route::post('/campaigns/create/{tab?}', [CampaignsController::class, 'store']);
-    Route::get('/campaigns/{campaigns}/{what?}', [CampaignsController::class, 'show'])->name('campaigns.show');
+    Route::get('/campaigns/{campaigns}/{what?}', [CampaignsController::class, 'show'])->name('campaigns.show')->withTrashed();
     Route::patch('/campaigns/{campaigns}/restore', [CampaignsController::class, 'restore'])->withTrashed()->name('campaigns.restore');
     
 });

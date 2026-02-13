@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Campaigns extends Model
@@ -22,5 +23,10 @@ class Campaigns extends Model
     public function emailList()
     {
         return $this->belongsTo(EmailList::class);
+    }
+
+    public function mails(): HasMany
+    {
+        return $this->hasMany(CampaignMail::class);
     }
 }

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
-class SendEmailCampaign implements ShouldQueue
+class SendEmailsCampaign implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -29,8 +29,7 @@ class SendEmailCampaign implements ShouldQueue
     public function handle(): void
     {
         foreach ($this->campaigns->emailList->subscribers as $subscriber) {
-            Mail::to($subscriber->email)
-                ->later($this->campaigns->send_at, new EmailCampaign($this->campaigns));
+            SendEmailCampaignJob::dispatch($this->campaigns, $subscriber);
         }
     }
 }
