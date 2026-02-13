@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-4">
-    <x-alert success noIcon :title="__('Your campaign went to send for '. $query['total_subscribers']) . ' subscribers this list: ' . $campaigns->emailList->title" />
+    <x-alert success noIcon :title="__('Your campaign was sent to '. $query['total_subscribers']) . ' subscribers on the list: ' . $campaigns->emailList->title" />
     <div class="grid grid-cols-3 gap-5">
         <x-dashboard.card :heading="$query['total_openings']" subheading="{{ __('Opens') }}" />
         <x-dashboard.card :heading="$query['unique_openings']" subheading="{{ __('Unique Opens') }}" />
