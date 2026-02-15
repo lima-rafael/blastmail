@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Campaigns;
+use App\Models\CampaignMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -18,7 +19,8 @@ class EmailCampaign extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public Campaigns $campaigns
+        public Campaigns $campaigns,
+        public CampaignMail $mail
     ){}
 
     /**

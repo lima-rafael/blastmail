@@ -27,7 +27,7 @@ class SendEmailCampaignJob implements ShouldQueue
      */
     public function handle(): void
     {
-        CampaignMail::query()
+        $mail =CampaignMail::query()
             ->create([
                 'campaigns_id' => $this->campaigns->id,
                 'subscriber_id' => $this->subscriber->id,
@@ -35,6 +35,6 @@ class SendEmailCampaignJob implements ShouldQueue
             ]);
 
         Mail::to($this->subscriber->email)
-                ->later($this->campaigns->send_at, new EmailCampaign($this->campaigns));
+                ->later($this->campaigns->send_at, new EmailCampaign($this->campaigns, $mail));
     }
 }
