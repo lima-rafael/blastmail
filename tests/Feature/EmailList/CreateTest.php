@@ -1,7 +1,6 @@
 <?php
 
 namespace Tests\Feature\EmailList;
-use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
 
