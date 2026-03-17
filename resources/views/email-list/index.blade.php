@@ -27,6 +27,11 @@
                                     <x-button.link secondary :href="route('subscribers.index', $list)">
                                         {{ __('Subscribers') }}
                                     </x-button.link>
+                                    <x-form :action="route('email-list.delete', [$list])" delete>
+                                        <x-button.secondary type="submit" onclick="return confirm('{{ __('Are you sure?') }}')">
+                                            {{ __('Delete') }}
+                                        </x-button.secondary>
+                                    </x-form>
                                 </x-table.td>
                             </tr>
                         @endforeach
