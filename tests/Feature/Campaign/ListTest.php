@@ -31,7 +31,7 @@ it('should be possible see the entire list of campaigns', function(){
 
 it('should be able to search a campaign', function(){
     Campaigns::factory()->count(5)->create();
-    Campaigns::factory()->create(['name' => 'Charlie Smith',]);
+    Campaigns::factory()->create(['name' => 'Charlie Smith', 'deleted_at' => null]);
 
     //Filtrar com o emial
     get(route('campaigns.index', ['search' => 'Charlie']))
@@ -43,8 +43,8 @@ it('should be able to search a campaign', function(){
 });
 
 it('should be able filter with ID', function(){
-    Campaigns::factory()->create(['name' => 'Jane Doe',]);
-    Campaigns::factory()->create(['name' => 'Joe Doe',]);
+    Campaigns::factory()->create(['name' => 'Jane Doe']);
+    Campaigns::factory()->create(['name' => 'Joe Doe', 'deleted_at' => null]);
 
     //Filtrar com o id
     get(route('campaigns.index', ['search' => 2]))
