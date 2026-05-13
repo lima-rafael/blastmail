@@ -31,26 +31,26 @@ it('should be possible see the entire list of templates', function(){
 
 it('should be able to search a template', function(){
     Template::factory()->count(5)->create();
-    Template::factory()->create(['name' => 'Charlie Smith',]);
+    $template = Template::factory()->create(['name' => 'Charlie Smith',]);
 
     //Filtrar com o emial
     get(route('template.index', ['search' => 'Charlie']))
-        ->assertViewHas('templates', function($value){
+        ->assertViewHas('templates', function($value) use ($template) {
             expect($value)->count(1);
-            expect($value)->first()->id->toBe(6);
+            expect($value)->first()->id->toBe($template->id);
             return true;
         });
 });
 
 it('should be able filter with ID', function(){
     Template::factory()->create(['name' => 'Jane Doe',]);
-    Template::factory()->create(['name' => 'Joe Doe',]);
+    $template = Template::factory()->create(['name' => 'Joe Doe',]);
 
     //Filtrar com o id
-    get(route('template.index', ['search' => 1]))
-        ->assertViewHas('templates', function($value){
+    get(route('template.index', ['search' => 2]))
+        ->assertViewHas('templates', function($value) use ($template) {
             expect($value)->count(1);
-            expect($value)->first()->id->toBe(1);
+            expect($value)->first()->id->toBe($template->id);
             return true;
         });
 });
