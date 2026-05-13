@@ -63,13 +63,13 @@ it('should be possible to filter by email', function(){
 });
 
 it('should be possible to filter by clicks', function(){
-    get(route('campaigns.show', ['campaigns' => $this->campaign, 'what' => 'clicked', 'search' => 5]))
+    get(route('campaigns.show', ['campaigns' => $this->campaign, 'what' => 'clicked', 'search' => 7]))
         ->assertViewHas('what', 'clicked')
         ->assertViewHas('query', function($query){
             expect($query)->toHaveCount(1);
             return true;
         })
         ->assertSeeTextInOrder([
-            $this->mail2->subscriber->name, $this->mail2->clicks, $this->mail2->subscriber->email,
+            $this->mail1->subscriber->name, $this->mail1->clicks, $this->mail1->subscriber->email,
         ]);
 });
